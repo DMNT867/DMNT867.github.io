@@ -4,28 +4,28 @@
     <meta charset="utf-8">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Define las expresiones regulares para validar el correo electrónico y la contraseña
+            
             var emailRegex = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
             var passwordRegex = /^.{6,}$/;  // Al menos 6 caracteres
 
-            // Función para validar el correo electrónico y la contraseña al iniciar sesión
+            
             function validarInicioSesion() {
-                // Obtiene los valores del correo electrónico y la contraseña desde el formulario
+                
                 var correoElectronico = document.getElementById('correoElectronico').value;
                 var contrasena = document.getElementById('contrasena').value;
 
-                // Verifica si los valores cumplen con las expresiones regulares
+                
                 if (!emailRegex.test(correoElectronico)) {
                     alert('Email no válido');
                 } else if (!passwordRegex.test(contrasena)) {
                     alert('Contraseña no válida (al menos 6 caracteres)');
                 } else {
                     alert('Inicio de sesión exitoso');
-                    // Aquí puedes redirigir al usuario o realizar la lógica de inicio de sesión en el servidor
+                    
                 }
             }
 
-            // Asigna la función de validación a un evento (puedes cambiar esto según tu formulario)
+            
             document.getElementById('btnIniciarSesion').addEventListener('click', validarInicioSesion);
         });
     </script>
