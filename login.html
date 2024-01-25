@@ -71,25 +71,36 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Define la expresión regular para validar el correo electrónico
-            var re = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+            var emailRegex = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
-            // Proporciona un valor para validar (cambia esto según tus necesidades)
-            var valor = "ejemplo@dominio.com";
+            // Función para validar el correo electrónico al iniciar sesión
+            function validarInicioSesion() {
+                // Obtiene el valor del correo electrónico desde el formulario (cambia esto según tu formulario)
+                var correoElectronico = document.getElementById('correoElectronico').value;
 
-            // Verifica si el valor cumple con la expresión regular
-            if (!re.exec(valor)) {
-                alert('Email no válido');
-            } else {
-                alert('Email válido');
+                // Verifica si el valor cumple con la expresión regular
+                if (!emailRegex.test(correoElectronico)) {
+                    alert('Email no válido');
+                } else {
+                    alert('Email válido - ¡Iniciando sesión!');
+                    // Aquí puedes redirigir al usuario o realizar la lógica de inicio de sesión
+                }
             }
+
+            // Asigna la función de validación a un evento (puedes cambiar esto según tu formulario)
+            document.getElementById('btnIniciarSesion').addEventListener('click', validarInicioSesion);
         });
     </script>
 </head>
 <body>
-    <!-- Tu contenido HTML aquí -->
+    <form>
+        <label for="correoElectronico">Correo Electrónico:</label>
+        <input type="text" id="correoElectronico" name="correoElectronico" required>
+
+        <button type="button" id="btnIniciarSesion">Iniciar Sesión</button>
+    </form>
 </body>
 </html>
-
 </body>
 </html>
 
