@@ -53,39 +53,3 @@
   </style>
 </head>
 <body>
-
-  <form>
-    <label for="correo">Correo:</label>
-    <input type="email" id="correo" name="correo" required>
-
-    <label for="contraseña">Contraseña:</label>
-    <input type="password" id="contraseña" name="contraseña" required>
-
-    <button type="submit">Iniciar sesión</button>
-  </form>
-<p>
-  Ingresa tu número de teléfono (con el código de área) y luego haz clic en
-  "Comprobar".
-  <br />
-  El formato esperado es como ###-###-####.
-</p>
-<form action="#">
-  <input id="phone" />
-  <button onclick="testInfo(document.getElementById('phone'));">
-    Comprobar
-  </button>
-</form>
-</body>
-</html>
-
-var re = /(?:\d{3}|\(\d{3}\))([-\/\.])\d{3}\1\d{4}/;
-function testInfo(phoneInput) {
-  var OK = re.exec(phoneInput.value);
-  if (!OK) {
-    console.error(phoneInput.value + " isn't a phone number with area code!");
-  } else {
-    console.log("Gracias, tu número de teléfono es " + OK[0]);
-  }
-}
-
-
