@@ -64,20 +64,30 @@
     <button type="submit">Iniciar sesión</button>
   </form>
 
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<meta charset="utf-8">
-<script>
-{
-	re=/^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/
-	if(!re.exec(valor)){
-		alert('email no valido');
-	}
-	else alert('email valido');
-	}
-</script>
+    <meta charset="utf-8">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Define la expresión regular para validar el correo electrónico
+            var re = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
+            // Proporciona un valor para validar (cambia esto según tus necesidades)
+            var valor = "ejemplo@dominio.com";
+
+            // Verifica si el valor cumple con la expresión regular
+            if (!re.exec(valor)) {
+                alert('Email no válido');
+            } else {
+                alert('Email válido');
+            }
+        });
+    </script>
 </head>
+<body>
+    <!-- Tu contenido HTML aquí -->
+</body>
 </html>
 
 </body>
