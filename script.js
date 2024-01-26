@@ -2,7 +2,7 @@
  document.addEventListener('DOMContentLoaded', function() {
             
             var emailRegex = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-            var passwordRegex = /^.{6,}$/;  // Al menos 6 caracteres
+            var passwordRegex = /^.{6,}$/; 
 
             
             function validarInicioSesion() {
@@ -14,7 +14,7 @@
                 if (!emailRegex.test(correoElectronico)) {
                     alert('Email no válido');
                 } else if (!passwordRegex.test(contrasena)) {
-                    alert('Contraseña no válida (al menos 6 caracteres)');
+                    alert('Contraseña no válida (al menos 8 caracteres)');
                 } else {
                     alert('Inicio de sesión exitoso');
                     
