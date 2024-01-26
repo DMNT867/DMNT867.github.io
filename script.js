@@ -1,5 +1,4 @@
-
-        document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
             var emailRegex = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
             var passwordRegex = /^.{6,}$/;
 
@@ -18,5 +17,4 @@
             }
 
             document.getElementById('btnIniciarSesion').addEventListener('click', validarInicioSesion);
-        }
-    
+        });
