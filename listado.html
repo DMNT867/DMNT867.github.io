@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,12 +15,12 @@
     }
 
     .card {
-      width: 15px;
+      width: 15rem;
     }
 
     #character-list-container {
       max-height: 500px;
-      overflow-y: auto; <!-- Le da diseño a los bordes de las tarjetas de los personajes-->
+      overflow-y: auto;
     }
 
     .number-badge {
@@ -50,10 +49,16 @@
     </div>
     <div class="row justify-content-center my-5">
       <div class="col-12">
-        <div id="character-list-container" class="d-flex flex-wrap justify-content-around align-items-start">
-          <!-- Contenedor para mostrar la lista de personajes. -->
-          <!-- Los elementos de personajes se agregarán aquí dinámicamente. -->
+        <div class="input-group mb-3">
+          <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre">
+          <button class="btn btn-primary" type="button" onclick="searchCharacter()">Buscar</button>
         </div>
+      </div>
+    </div>
+    <div class="row justify-content-center my-5">
+      <div class="col-12" id="character-list-container">
+        <!-- Contenedor para mostrar la lista de personajes. -->
+        <!-- Los elementos de personajes se agregarán aquí dinámicamente. -->
       </div>
     </div>
   </div>
@@ -64,66 +69,101 @@
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
   <script>
-    // Script de JavaScript para la funcionalidad de la página.
-  </script>
-</body>
+    let currentIndex = 0;
+    let charactersData;
 
-<script>
-  let currentIndex = 0;
-  let charactersData;
-
-  async function fetchCharacters() {
-    const response = await fetch('https://rickandmortyapi.com/api/character');
-    charactersData = await response.json();
-    // Función para obtener datos de la API de Rick and Morty.
-  }
-
-  async function showNextCharacter() {
-    if (!charactersData) {
-      await fetchCharacters();
+    async function fetchCharacters(name = '') {
+      let url = 'https://rickandmortyapi.com/api/character';
+      if (name) {
+        url += `?name=${name}`;
+      }
+      const response = await fetch(url);
+      charactersData = await response.json();
+      renderCharacters(charactersData);
     }
 
-    const characterListContainer = document.getElementById('character-list-container');
-
-    if (currentIndex < charactersData.results.length) {
-      const character = charactersData.results[currentIndex];
-
-      const listItem = document.createElement('div');
-      listItem.classList.add('character-card', 'position-relative');
-
-      let statusColor = '#28a745'; // Verde por defecto (Vivo)
-      if (character.status === 'Dead') {
-        statusColor = '#dc3545'; // Rojo (Muerto)
-      } else if (character.status === 'unknown') {
-        statusColor = '#6c757d'; // Gris (Desconocido)
+    async function showNextCharacter() {
+      if (!charactersData) {
+        await fetchCharacters();
       }
 
-      listItem.innerHTML = `
-        <div class="card">
-          <div class="number-badge" style="background-color: ${statusColor}">${currentIndex + 1}</div>
-          <img src="${character.image}" class="card-img-top" alt="Character Image">
-          <div class="card-body">
-            <h5 class="card-title">${character.name}</h5>
-            <p class="card-text">
-              <span class="fw-bold">Número:</span> ${currentIndex + 1}<br>
-              <span class="fw-bold">IdPersonaje:</span> ${character.id}<br>
-              <span class="fw-bold">Estado:</span> <span style="color: ${statusColor}">${character.status}</span><br>
-              <span class="fw-bold">Especie:</span> ${character.species}
-            </p>
+      const characterListContainer = document.getElementById('character-list-container');
+
+      if (currentIndex < charactersData.results.length) {
+        const character = charactersData.results[currentIndex];
+        const listItem = createCharacterCard(character);
+        characterListContainer.appendChild(listItem);
+        currentIndex++;
+      } else {
+        alert('¡Has llegado al final de la lista de personajes!');
+      }
+    }
+
+    function createCharacterCard(character) {
+      const statusColor = getStatusColor(character.status);
+
+      const cardTemplate = `
+        <div class="character-card position-relative">
+          <div class="card">
+            <div class="number-badge" style="background-color: ${statusColor}">${currentIndex + 1}</div>
+            <img src="${character.image}" class="card-img-top" alt="Character Image">
+            <div class="card-body">
+              <h5 class="card-title">${character.name}</h5>
+              <p class="card-text">
+                <span class="fw-bold">Número:</span> ${currentIndex + 1}<br>
+                <span class="fw-bold">IdPersonaje:</span> ${character.id}<br>
+                <span class="fw-bold">Estado:</span> <span style="color: ${statusColor}">${character.status}</span><br>
+                <span class="fw-bold">Especie:</span> ${character.species}
+              </p>
+            </div>
           </div>
         </div>
       `;
 
-      characterListContainer.appendChild(listItem);
-      currentIndex++;
-    } else {
-      alert('¡Has llegado al final de la lista de personajes!');
+      const parser = new DOMParser();
+      const cardDocument = parser.parseFromString(cardTemplate, 'text/html');
+      return cardDocument.body.firstChild;
     }
-  }
 
-  function clearList() {
-    currentIndex = 0;
-    const characterListContainer = document.getElementById('character-list-container');
-    characterListContainer.innerHTML = ''; // Limpiar la lista
-  }
-</script>
+    function getStatusColor(status) {
+      let statusColor = '#28a745'; // Verde por defecto (Vivo)
+      if (status === 'Dead') {
+        statusColor = '#dc3545'; // Rojo (Muerto)
+      } else if (status === 'unknown') {
+        statusColor = '#6c757d'; // Gris (Desconocido)
+      }
+      return statusColor;
+    }
+
+    function renderCharacters(charactersData) {
+      const characterListContainer = document.getElementById('character-list-container');
+      clearList(); // Limpiar la lista antes de mostrar los resultados de la búsqueda
+
+      if (charactersData.results.length > 0) {
+        charactersData.results.forEach(character => {
+          const listItem = createCharacterCard(character);
+          characterListContainer.appendChild(listItem);
+        });
+      } else {
+        alert('¡No se encontraron personajes!');
+      }
+    }
+
+    function clearList() {
+      currentIndex = 0;
+      const characterListContainer = document.getElementById('character-list-container');
+
+      // Eliminar todos los nodos hijos del contenedor
+      while (characterListContainer.firstChild) {
+        characterListContainer.removeChild(characterListContainer.firstChild);
+      }
+    }
+
+    function searchCharacter() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      fetchCharacters(searchTerm);
+    }
+  </script>
+</body>
+
+</html>
